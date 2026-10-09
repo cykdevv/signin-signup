@@ -1,1 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignIn SignUp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
+        body {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        .container .hidden {
+            display: none;
+        }
+
+        .signin-signup-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            background-color: lightgrey;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            background-color: white;
+            border-radius: 10px;
+            width: min(310px, calc(100% - 40px));
+            padding: 30px;
+            margin: 20px;
+            position: relative;
+        }
+
+        .signin-page,
+        .signup-page,
+        .forgpass-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+        }
+
+        .signin-page h1,
+        .signup-page h1,
+        .forgpass-page h1 {
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .signin-page i,
+        .signup-page i {
+            position: absolute;
+            top: 12px;
+            right: 11px;
+            font-size: 14px;
+        }
+
+        .signin-page > div,
+        .signup-page > div,
+        .forgpass-page > div {
+            width: 100%;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .signin-page input,
+        .signup-page input,
+        .forgpass-page input {
+            width: 100%;
+            padding: 10px;
+            padding-right: 30px;
+            border-radius: 5px;
+            border: 1px solid;
+            outline: none;
+        } 
+
+        .signin-page button,
+        .signup-page button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #252525;
+            color: white;
+        }
+
+        .signin-page button:active,
+        .signup-page button:active,
+        .forgpass-page button:active {
+            background-color: #575757;
+        }
+
+        .signin-page .no-acc,
+        .signup-page .have-acc {
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 5px;
+            margin-top: 3px;
+        }
+
+        .signin-page .fa-eye,
+        .signin-page .fa-eye-slash,
+        .signup-page .fa-eye,
+        .signup-page .fa-eye-slash {
+            right: 29px;
+            color: grey;
+        }
+
+
+
+
+
+        /* signin style */
+        .signin-page .pass {
+            margin-bottom: 0;
+        }
+
+        .signin-page .forg-pass {
+            text-align: end;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+
+
+
+
+        /* signup style */
+        .signup-page .lab input {
+            margin-bottom: -3px;
+        }
+        .signup-page .lab label {
+            margin-left: 5px;
+            font-size: 11px;
+            color: grey;
+        }
+
+
+
+
+
+        /* forgpass page style */
+        .forgpass-page h1 {
+            width: 100%;
+            font-size: 22px;
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+
+        .forgpass-page p {
+            width: 100%;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .forgpass-page a {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: black;
+            margin-bottom: 5px;
+        }
+
+        .forgpass-page .em {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .forgpass-page input {
+            width: 84%;
+            padding-right: 30px;
+        }
+
+        .forgpass-page button {
+            width: 15%;
+            font-size: 10px;
+            color: white;
+            background-color: #252525;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .forgpass-page .fa-envelope {
+            position: absolute;
+            right: 45px;
+            top: 11px;
+            font-size: 14px;
+        }
+
+        .forgpass-page .fa-arrow-left {
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .ex {
+            width: 100%;
+            font-size: 11px;
+            color: grey;
+            margin-left: 5px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+
+        .recOutput {
+            font-size: 14px;
+            color: lightgreen;
+            margin-bottom: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="signin-signup-page">
+        <div class="container">
+            <div class="signin-page" id="signin-page">
+                <h1>Sign In</h1>
+                <div class="input-box">
+                    <input type="text" id="lEmail" placeholder="Email" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-box pass">
+                    <input type="password" placeholder="Password" id="lPassword" required>
+                    <i class="fa-solid fa-lock"></i>
+                    <i onclick="lCloseEye()" class="fa-regular fa-eye hidden" id="lFa-eye"></i>
+                    <i onclick="lOpenEye()" class="fa-regular fa-eye-slash" id="lFa-eye-slash"></i>
+                </div>
+                <div class="forg-pass">
+                    <a onclick="showForgPassPage()" href="#">forgot password</a>
+                </div>
+                <div>
+                    <button onclick="signinBtn()">Sign In</button>
+                </div>
+                <div class="no-acc">
+                    <label for="">Doesn't have an Account? <a onclick="showSignUpPage()" href="#">Sign Up</a></label>
+                </div>
+            </div>
+
+
+            <div class="signup-page hidden" id="signup-page">
+                <h1>Sign Up</h1>
+                <div class="input-box">
+                    <input type="text" id="rUsername" placeholder="Username" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-box lab">
+                    <input type="text" id="rEmail" placeholder="Email" required>
+                    <i class="fa-solid fa-envelope"></i>
+                    <label for="">Ex. spongebob@gmail.com</label>
+                </div>
+                <div class="input-box pass">
+                    <input type="password" placeholder="Password" id="rPassword" required>
+                    <i class="fa-solid fa-lock"></i>
+                    <i onclick="rCloseEye()" class="fa-regular fa-eye hidden" id="rFa-eye"></i>
+                    <i onclick="rOpenEye()" class="fa-regular fa-eye-slash" id="rFa-eye-slash"></i>
+                </div>
+                <div class="input-box pass">
+                    <input type="password" placeholder="Confirm Password" id="rcPassword" required>
+                    <i class="fa-solid fa-lock"></i>
+                    <i onclick="rcCloseEye()" class="fa-regular fa-eye hidden" id="rcFa-eye"></i>
+                    <i onclick="rcOpenEye()" class="fa-regular fa-eye-slash" id="rcFa-eye-slash"></i>
+                </div>
+                <div>
+                    <button onclick="signupBtn()">Sign Up</button>
+                </div>
+                <div class="have-acc">
+                    <label for="">Already have an Account? <a onclick="showSignInPage()" href="#">Sign In</a></label>
+                </div>
+            </div>
+
+
+            <div class="forgpass-page hidden" id="forgpass-page">
+                <h1>Recover Account?</h1>
+                <p>Enter your registered Email Address below, and we will send you a secure link to reset it.</p>
+                <div class="input-box em">
+                    <input type="email" id="recEmail" placeholder="Email" required>
+                    <i class="fa-solid fa-envelope"></i>
+                    <button>send</button>
+                </div>
+                <label class="ex">Ex. spongebob@gmail.com</label>
+                <label class="recOutput hidden">Sent Successfully!</label>
+                <a onclick="showSignInPage()" href=""><i class="fa-solid fa-arrow-left"></i>back to login</a>
+            </div>
+
+
+
+
+
+            
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "";
+        const SUPABASE_ANON_KEY = "";
+
+        const supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        )
+
+        async function signinBtn() {
+            const email = document.getElementById('lEmail').value.trim().toLowerCase();
+            const password = document.getElementById('lPassword').value;
+
+            if (email === "" || password === "") {
+                window.alert("Please fill up the empty ones.");
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword ({
+                email: email,
+                password: password
+            })
+
+            if (error) {
+                window.alert(error.message);
+                return;
+            }
+
+            window.alert("Login Successfully!");
+        }
+
+        async function signupBtn() {
+            const username = document.getElementById('rUsername').value.trim().toLowerCase();
+            const email = document.getElementById('rEmail').value.trim().toLowerCase();
+            const password = document.getElementById('rPassword').value;
+            const confirmPass = document.getElementById('rcPassword').value;
+
+            if (username === "" || email === "" || password === "" || confirmPass === "") {
+                window.alert("SignUp Error: Please fill up the empty ones.");
+                return;
+            }
+
+            if (password.length < 8) {
+                window.alert("SignUp Error: Password must be at least 8 characters.");
+                return;
+            }
+
+            if (password !== confirmPass) {
+                window.alert("SignUp Error: Password doesn't match.");
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                window.alert(error.message);
+                return;
+            }
+
+            const { error: otpError } = await supabaseClient.auth.signInWithOtp({ 
+                email: email, 
+                options: { 
+                    shouldCreateUser: false
+                } 
+            }); 
+            
+            if (otpError) { 
+                window.alert("OTP Error: " + otpError.message); 
+                return; 
+            }
+
+            // Go to email verification page
+            window.location.href = "verifyemail.html?email=" +
+            encodeURIComponent(email);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function showSignInPage() {
+            document.getElementById('signin-page').classList.remove('hidden');
+            document.getElementById('signup-page').classList.add('hidden');
+            document.getElementById('forgpass-page').classList.add('hidden');
+            document.getElementById('rUsername').value = "";
+            document.getElementById('rEmail').value = "";
+            document.getElementById('recEmail').value = "";
+            document.getElementById('rPassword').value = "";
+            document.getElementById('rcPassword').value = "";
+            document.getElementById('rPassword').type = "password";
+            document.getElementById('rcPassword').type = "password";
+            rCloseEye();
+            rcCloseEye();
+        }
+        
+        function showSignUpPage() {
+            document.getElementById('signin-page').classList.add('hidden');
+            document.getElementById('signup-page').classList.remove('hidden');
+            document.getElementById('forgpass-page').classList.add('hidden');
+            document.getElementById('lEmail').value = "";
+            document.getElementById('lPassword').value = "";
+            document.getElementById('lPassword').type = "password";
+            lCloseEye();
+        }
+
+        function showForgPassPage() {
+            document.getElementById('signin-page').classList.add('hidden');
+            document.getElementById('signup-page').classList.add('hidden');
+            document.getElementById('forgpass-page').classList.remove('hidden');
+            document.getElementById('lEmail').value = "";
+            document.getElementById('lPassword').value = "";
+            document.getElementById('lPassword').type = "password";
+            lCloseEye();
+        }
+
+        function lOpenEye() {
+            document.getElementById('lFa-eye').classList.remove('hidden');
+            document.getElementById('lFa-eye-slash').classList.add('hidden');
+            document.getElementById('lPassword').type = "text";
+        }
+        function lCloseEye() {
+            document.getElementById('lFa-eye').classList.add('hidden');
+            document.getElementById('lFa-eye-slash').classList.remove('hidden');
+            document.getElementById('lPassword').type = "password";
+        }
+
+        function rOpenEye() {
+            document.getElementById('rFa-eye').classList.remove('hidden');
+            document.getElementById('rFa-eye-slash').classList.add('hidden');
+            document.getElementById('rPassword').type = "text";
+        }
+        function rCloseEye() {
+            document.getElementById('rFa-eye').classList.add('hidden');
+            document.getElementById('rFa-eye-slash').classList.remove('hidden');
+            document.getElementById('rPassword').type = "password";
+        }
+
+        function rcOpenEye() {
+            document.getElementById('rcFa-eye').classList.remove('hidden');
+            document.getElementById('rcFa-eye-slash').classList.add('hidden');
+            document.getElementById('rcPassword').type = "text";
+        }
+        function rcCloseEye() {
+            document.getElementById('rcFa-eye').classList.add('hidden');
+            document.getElementById('rcFa-eye-slash').classList.remove('hidden');
+            document.getElementById('rcPassword').type = "password";
+        }
+
+        
+
+    </script>
+</body>
+</html>
